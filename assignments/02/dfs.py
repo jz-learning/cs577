@@ -16,10 +16,11 @@ for _ in range(instance):
         graph[edge[0]] = edge[1:]
 
     # start dfs
+    total_len = len(all_nodes)
     to_visit = [all_nodes[0]]
     visited = []
 
-    while to_visit or all_nodes:
+    while len(visited) < total_len:
         # pops the first element of the list
         if to_visit:
             search_element = to_visit.pop(0)
