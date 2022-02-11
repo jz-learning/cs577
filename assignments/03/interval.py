@@ -11,15 +11,19 @@ for _ in range(int(input())):
         continue
 
     # turn input into lists of lists
-    S = [input().split() for _ in range(num_inter)]
+    S = [list(map(int, input().split())) for _ in range(num_inter)]
 
     # Sort based on end time
     intervals = sorted(S, key=lambda a: a[1])
 
     jobs = 1
-
+    prev = intervals[0][1]
+    print(intervals)
     for i in range(1, len(intervals)):
-        if intervals[i][0] >= intervals[i - 1][1]:
+        if intervals[i][0] >= prev:
+            print(f"{intervals[i]} bigger than {intervals[i - 1]}")
+            print(f"taking the job{intervals[i]}")
+            prev = intervals[i][1]
             jobs += 1
 
     res.append(f"{jobs}")
