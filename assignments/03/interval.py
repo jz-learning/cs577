@@ -16,17 +16,17 @@ for _ in range(int(input())):
     # Sort based on end time
     intervals = sorted(S, key=lambda a: a[1])
 
+    # initialize the first interval
     jobs = 1
     prev = intervals[0][1]
-    print(intervals)
+
     for i in range(1, len(intervals)):
+        # cheking compatibility, then update
         if intervals[i][0] >= prev:
-            print(f"{intervals[i]} bigger than {intervals[i - 1]}")
-            print(f"taking the job{intervals[i]}")
             prev = intervals[i][1]
             jobs += 1
 
-    res.append(f"{jobs}")
+    res.append(jobs)
 
 
 for n in res:
