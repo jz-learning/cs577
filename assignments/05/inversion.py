@@ -1,21 +1,26 @@
 def merge_count(arr1, arr2):
-    merged, count, l, r = list(), 0, 0, 0
+    merged, count, i, j = [], 0, 0, 0
+    l, r = len(arr1), len(arr2)
 
-    while l < len(arr1) and r < len(arr2):
-        if arr2[r] < arr1[l]:
-            merged.append(arr2[r])
-            count += len(arr1)
-            r += 1
+    # merge sort
+    while i < l and j < r:
+        # increase count by 1 if merging from the right array
+        if arr2[j] < arr1[i]:
+            merged.append(arr2[j])
+            count += l - i
+            j += 1
         else:
-            merged.append(arr1[l])
-            l += 1
+            merged.append(arr1[i])
+            i += 1
 
-    if l == len(arr1):
-        merged.extend(arr2[r:])
-    elif r == len(arr2):
-        merged.extend(arr1[l:])
+    # add remaining elements once the other reaches the end
+    # all elements here are the largest onces, so they won't increase count
+    if i == l:
+        merged.extend(arr2[j:])
+    elif j == r:
+        merged.extend(arr1[i:])
 
-    return (merged, count)
+    return merged, count
 
 
 def inversion(n, arr):
@@ -23,17 +28,20 @@ def inversion(n, arr):
     if n == 1:
         return (arr, 0)
 
+    # split array into halves
     mid = n // 2
-
     front = arr[:mid]
     back = arr[mid:]
 
+    # recursion
     A, ctA = inversion(mid, front)
     B, ctB = inversion(n - mid, back)
 
+    # merge
     C, ctC = merge_count(A, B)
+    total_count = ctA + ctB + ctC
 
-    return (C, ctA + ctB + ctC)
+    return C, total_count
 
 
 def main():
@@ -51,10 +59,8 @@ def main():
         res += f"{count}\n"
 
     # Get rid of trailing newline char
-    return res[:-1]
+    return res.rstrip()
 
 
 if __name__ == "__main__":
-    sol = main()
-
-    print(sol)
+    print(main())
