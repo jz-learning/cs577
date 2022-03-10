@@ -1,8 +1,43 @@
-def intersect(n, q, p, pair):
-    print(q)
-    print(p)
-    print(list(pair))
-    return
+def merge(front, back):
+    merged = []
+    intersects = 0
+    i, j = 0, 0
+    l, r = len(front), len(back)
+
+    while i < l and j < r:
+        f, b = front[i], back[j]
+        if f[1] > b[1]:
+            merged.append(b)
+            intersects += l - i
+            j += 1
+        else:
+            merged.append(f)
+            i += 1
+
+    if j == r:
+        merged.extend(front[i:])
+    elif i == l:
+        merged.extend(back[j:])
+
+    return merged, intersects
+
+
+def intersect(n, pairs):
+    # base case
+    if n == 1:
+        return (pairs, 0)
+
+    mid = n // 2
+
+    front = pairs[:mid]
+    back = pairs[mid:]
+
+    A, ctA = intersect(mid, front)
+    B, ctB = intersect(n - mid, back)
+
+    C, ctC = merge(A, B)
+
+    return C, ctA + ctB + ctC
 
 
 def main():
@@ -21,9 +56,13 @@ def main():
         for _ in range(n):
             p.append(int(input()))
 
-        pair = zip(q, p)
+        # combine the list of q and p so they can be sorted together
+        pairs = list(zip(q, p))
 
-        count = intersect(n, q, p, pair)
+        # sort the two respective lists together by Q
+        pairs = sorted(pairs, key=lambda pair: pair[0])
+
+        _, count = intersect(n, pairs)
         res += f"{count}\n"
 
     # Get rid of trailing newline char
