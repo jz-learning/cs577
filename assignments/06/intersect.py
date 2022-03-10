@@ -1,6 +1,5 @@
 def merge(front, back):
-    merged = []
-    intersects = 0
+    merged, intersects = [], 0
     i, j = 0, 0
     l, r = len(front), len(back)
 
