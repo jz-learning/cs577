@@ -1,42 +1,47 @@
-def merge(front, back):
-    merged, intersects = [], 0
-    i, j = 0, 0
-    l, r = len(front), len(back)
+def merge_count(arr1, arr2):
+    merged, count, i, j = [], 0, 0, 0
+    l, r = len(arr1), len(arr2)
 
+    # merge sort
     while i < l and j < r:
-        f, b = front[i], back[j]
-        if f[1] > b[1]:
-            merged.append(b)
-            intersects += l - i
+        # increase count by 1 if merging from the right array
+        if arr2[j] < arr1[i]:
+            merged.append(arr2[j])
+            count += l - i
             j += 1
         else:
-            merged.append(f)
+            merged.append(arr1[i])
             i += 1
 
-    if j == r:
-        merged.extend(front[i:])
-    elif i == l:
-        merged.extend(back[j:])
+    # add remaining elements once the other reaches the end
+    # all elements here are the largest onces, so they won't increase count
+    if i == l:
+        merged.extend(arr2[j:])
+    elif j == r:
+        merged.extend(arr1[i:])
 
-    return merged, intersects
+    return merged, count
 
 
-def intersect(n, pairs):
+def intersect(n, arr):
     # base case
     if n == 1:
-        return (pairs, 0)
+        return (arr, 0)
 
+    # split array into halves
     mid = n // 2
+    front = arr[:mid]
+    back = arr[mid:]
 
-    front = pairs[:mid]
-    back = pairs[mid:]
-
+    # recursion
     A, ctA = intersect(mid, front)
     B, ctB = intersect(n - mid, back)
 
-    C, ctC = merge(A, B)
+    # merge
+    C, ctC = merge_count(A, B)
+    total_count = ctA + ctB + ctC
 
-    return C, ctA + ctB + ctC
+    return C, total_count
 
 
 def main():
@@ -61,7 +66,9 @@ def main():
         # sort the two respective lists together by Q
         pairs = sorted(pairs, key=lambda pair: pair[0])
 
-        _, count = intersect(n, pairs)
+        bottom_row = [pair[1] for pair in pairs]
+
+        _, count = intersect(n, bottom_row)
         res += f"{count}\n"
 
     # Get rid of trailing newline char
