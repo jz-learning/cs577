@@ -5,7 +5,7 @@ def knapsack(items, cap):
 
     for i in range(n):
         weight, value = items[i]
-        for j in range(cap, weight, -1):
+        for j in range(cap, weight - 1, -1):
             dp[j] = max(dp[j - weight] + value, dp[j])
 
     return dp[cap]
