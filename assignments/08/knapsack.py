@@ -1,8 +1,14 @@
 def knapsack(items, cap):
-    dp = [0] * cap
+    dp = [0] * (cap + 1)
     dp[0] = 0
+    n = len(items)
 
-    pass
+    for i in range(n):
+        weight, value = items[i]
+        for j in range(cap, weight, -1):
+            dp[j] = max(dp[j - weight] + value, dp[j])
+
+    return dp[cap]
 
 
 def main():
