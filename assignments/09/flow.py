@@ -1,5 +1,5 @@
 def flow():
-    pass
+    return 1
 
 
 def main():
@@ -14,7 +14,7 @@ def main():
 
         for _ in range(e):
             src, dst, cap = map(int, input().split())
-            print(src, dst, cap)
+            # print(src, dst, cap)
 
         ans = flow()
         res += f"{ans}\n"
